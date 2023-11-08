@@ -1,5 +1,7 @@
 package com.ekwateur.test.service;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.assertj.core.api.Assertions;
@@ -17,42 +19,13 @@ public class FacturationServiceTest {
         facturationService = new FacturationService();
     }
 
-    // Cas PART avec CA < 1000000
-    @Test
-    public void testComputeFacturationAmountPART() {
-        Customer customer = new Customer("customer_ref_1", CustomerType.PART, 123456);
-        EnergyType energyType = EnergyType.ELECTRICITY;
-        double consumption = 1600;
+    @ParameterizedTest
+    @CsvFileSource(resources = "/facturationServiceTestData.csv",numLinesToSkip = 1)
+    public void testComputeFacturationAmount(String customerRef, String customerType, int revenue, String energyType, double consumption, double priceKWh) {
+        Customer customer = new Customer(customerRef, CustomerType.valueOf(customerType), revenue);
 
-        double expectedAmount = FacturationService.PART_ELECTRICITY_PRICE * consumption;
-        double actualAmount = facturationService.computeFacturationAmount(customer, energyType, consumption);
-
-        Assertions.assertThat(actualAmount).isEqualTo(expectedAmount);
-    }
-
-
-    // Cas PRO avec CA < 1000000
-    @Test
-    public void testComputeFacturationAmountPROBelow1M() {
-        Customer customer = new Customer("customer_ref_2", CustomerType.PRO, 123456);
-        EnergyType energyType = EnergyType.GAZ;
-        double consumption = 1700;
-
-        double expectedAmount = FacturationService.PRO_GAZ_PRICE_BELOW_1M * consumption;
-        double actualAmount = facturationService.computeFacturationAmount(customer, energyType, consumption);
-
-        Assertions.assertThat(actualAmount).isEqualTo(expectedAmount);
-    }
-
-    // Cas PRO avec CA > 1000000
-    @Test
-    public void testComputeFacturationAmountPROAbove1M() {
-        Customer customer = new Customer("customer_ref_3", CustomerType.PRO, 1234567);
-        EnergyType energyType = EnergyType.ELECTRICITY;
-        double consumption = 1800;
-
-        double expectedAmount = FacturationService.PRO_ELECTRICITY_ABOVE_1M * consumption;
-        double actualAmount = facturationService.computeFacturationAmount(customer, energyType, consumption);
+        double expectedAmount = priceKWh * consumption;
+        double actualAmount = facturationService.computeFacturationAmount(customer, EnergyType.valueOf(energyType), consumption);
 
         Assertions.assertThat(actualAmount).isEqualTo(expectedAmount);
     }

@@ -35,13 +35,13 @@ public class FacturationControllerTest {
         double expectedAmount = 133.0; // Remplacez par la valeur attendue
 
         // Config du mock
-        Customer customer = new Customer("customer_ref_1", CustomerType.PART);
+        Customer customer = new Customer("customer_ref_1", CustomerType.PARTICULAR);
         Mockito.when(facturationService.computeFacturationAmount(customer, EnergyType.ELECTRICITY, consumption))
                 .thenReturn(expectedAmount);
 
         // Appel de la méthode du contrôleur
         // Vérification de la réponse
-        ResponseEntity<Double> response = facturationController.computeFacturationAmount("customer_ref_1", "PART", "ELECTRICITY", consumption);
+        ResponseEntity<Double> response = facturationController.computeFacturationAmount("customer_ref_1", "PARTICULAR", "ELECTRICITY", consumption);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody()).isEqualTo(expectedAmount);

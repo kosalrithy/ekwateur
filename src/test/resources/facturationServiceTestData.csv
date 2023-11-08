@@ -1,0 +1,4 @@
+customerRef,customerType,revenue,energyType,consumption,priceKWh
+customer_ref_1,PARTICULAR,123456,ELECTRICITY,1600,0.133
+customer_ref_2,PRO,123456,GAZ,1700,0.117
+customer_ref_3,PRO,1234567,ELECTRICITY,1800,0.110
