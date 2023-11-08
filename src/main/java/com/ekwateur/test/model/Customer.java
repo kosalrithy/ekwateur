@@ -1,37 +1,12 @@
 package com.ekwateur.test.model;
-
-import lombok.Data;
-@Data
-public class Customer {
-
+public record Customer(String customerReference, CustomerType customerType,
+                       String registrationNumber, String companyName,
+                       double revenue, String title, String lastname,
+                       String firstname) {
     public Customer(String customerReference, CustomerType customerType) {
-        this.customerReference = customerReference;
-        this.customerType = customerType;
+        this(customerReference, customerType, null, null, 0.0, null, null, null);
     }
-
-    // Type de client
-    private String customerReference;
-
-    // Type de client
-    private CustomerType customerType;
-
-    // Numéro de siret
-    private String registrationNumber;
-
-    // Raison sociale
-    private String companyName;
-
-    // Chiffre d'affaire
-    private double revenue;
-
-    // Civilité
-    private String title;
-
-    // Nom
-    private String lastname;
-
-    // Prénom
-    private String firstname;
-
-    // Ajoutez les autres propriétés spécifiques aux clients ici
+    public Customer(String customerReference, CustomerType customerType, double revenue) {
+        this(customerReference, customerType, null, null, revenue, null, null, null);
+    }
 }
